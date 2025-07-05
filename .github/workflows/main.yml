@@ -26,3 +26,24 @@ jobs:
         run: |
           mvn clean
           mvn -B package --file pom.xml
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{secrets.DOCKERHUB_USERNAME}}/beginner/v1.0.0
+
+      - name: Login to Docker
+        if: github.event_name != 'pull_request'
+        uses: docker/login-actions@v3
+        with:
+          username: ${{secrets.DOCKERHUB_USERNAME}}
+          password: ${{secrets.DOCKERHUB_TOKEN}}
+
+      - name: Build Docker Image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
