@@ -8,4 +8,4 @@ COPY target/*.jar ${APPLICATION_NAME}
 
 EXPOSE 8080
 
-CMD["java", "-jar", "${APPLICATION_NAME}"]
+CMD ["java", "-jar", "${APPLICATION_NAME}"]
