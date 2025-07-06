@@ -38,7 +38,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ secrets.DOCKERHUB_USERNAME }}/beginner/v1.0.0
+          images: ghcr.io/${{ github.repository }}/beginner/v1.0.0
 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v6
