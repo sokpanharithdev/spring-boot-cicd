@@ -6,3 +6,13 @@ spring:
     active: dev
   application:
     name: Beginner
+
+logging:
+  file:
+    path: ./logs
+    name: ${logging.file.path}/${spring.application.name}.log
+  logback:
+    rollingpolicy:
+      max-file-size: 1MB
+      file-name-pattern: ${logging.file.path}/${spring.application.name}-%d{yyyy-MM-dd}.%i.log
+      max-history: 0
