@@ -2,10 +2,8 @@ FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
-ARG APPLICATION_NAME=cicd.jar
-
-COPY target/*.jar ${APPLICATION_NAME}
+COPY target/*.jar cicd.jar
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "${APPLICATION_NAME}"]
+CMD ["java", "-jar", "cicd.jar"]
