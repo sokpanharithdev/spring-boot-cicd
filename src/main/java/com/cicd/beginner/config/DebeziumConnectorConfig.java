@@ -26,6 +26,8 @@ public class DebeziumConnectorConfig {
 
     @Value("${debezium.name}")
     private String connectorName;
+    @Value("${debezium.topic.prefix}")
+    private String connectorTopicPrefix;
     @Value("${debezium.connector.class}")
     private String connectorClass;
     @Value("${debezium.offset.storage}")
@@ -62,6 +64,7 @@ public class DebeziumConnectorConfig {
     public Configuration db2Connector() {
         Properties props = new Properties();
         props.setProperty("name", connectorName);
+        props.setProperty("topic.prefix", connectorTopicPrefix);
         props.setProperty("connector.class", connectorClass);
         props.setProperty("offset.storage", offsetStorage);
         props.setProperty("offset.storage.file.filename", offsetStorageFile);
