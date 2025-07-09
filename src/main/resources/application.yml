@@ -6,6 +6,70 @@ spring:
     active: dev
   application:
     name: Beginner
+  datasource:
+    url: jdbc:db2://localhost:50000/rith
+    username: db2inst1
+    password: 123Rith@#
+    driver-class-name: com.ibm.db2.jcc.DB2Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.DB2Dialect
+        default_schema: PUBLIC
+
+  cloud:
+    stream:
+      binders:
+        rabbit:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: localhost
+                port: 5672
+                username: guest
+                password: guest
+      bindings:
+        debezium-out:
+          destination: master-db.PUBLIC.USERS
+          contentType: application/json
+        usersListener-in-0:
+          destination: master-db.PUBLIC.USERS
+          group: users-group
+          contentType: application/json
+      rabbit:
+        bindings:
+          usersListener-in-0:
+            consumer:
+              exchangeType: topic
+              bindingRoutingKey: '#'
+
+debezium:
+  name: users-cdc-connector
+  topic:
+    prefix: master-db
+  connector:
+    class: io.debezium.connector.db2.Db2Connector
+  offset:
+    storage: org.apache.kafka.connect.storage.FileOffsetBackingStore
+    storage.file.filename: /tmp/offsets.dat
+    flush.interval.ms: 60000
+  database:
+    hostname: localhost
+    port: 50000
+    user: db2inst1
+    password: 123Rith@#
+    dbname: rith
+    server.name: master-db
+  schema:
+    history:
+      internal: io.debezium.storage.file.history.FileSchemaHistory
+      internal.file.filename: /tmp/schemahistory.dat
+  table:
+    include:
+      list: PUBLIC.USERS
 
 logging:
   file:
