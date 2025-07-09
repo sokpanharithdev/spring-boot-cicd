@@ -1,0 +1,22 @@
+services:
+  db2:
+    image: ibmcom/db2:11.5.0.0
+    platform: linux/amd64
+    environment:
+      - DB2INST1_PASSWORD=123Rith@#
+      - DB2INSTANCE=db2inst1
+      - DBNAME=rith
+      - LICENSE=accept
+    ports:
+      - "50000:50000"
+    volumes:
+      - db2-data:/database
+    privileged: true
+
+  rabbitmq:
+    image: rabbitmq:4.1.2-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+volumes:
+  db2-data:
