@@ -64,12 +64,13 @@ debezium:
     dbname: rith
     server.name: master-db
   schema:
-    history:
-      internal: io.debezium.storage.file.history.FileSchemaHistory
-      internal.file.filename: /tmp/schemahistory.dat
+    include:
+      list: PUBLIC,ASNCDC
   table:
     include:
-      list: PUBLIC.USERS
+      list: PUBLIC.USERS,ASNCDC.CD_USERS
+  snapshot:
+    mode: never
 
 logging:
   file:
@@ -79,4 +80,7 @@ logging:
     rollingpolicy:
       max-file-size: 1MB
       file-name-pattern: ${logging.file.path}/${spring.application.name}-%d{yyyy-MM-dd}.%i.log
-      max-history: 0
+      max-history: 30
+  level:
+    io.debezium: DEBUG
+    org.springframework.cloud.stream: DEBUG
